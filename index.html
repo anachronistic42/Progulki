@@ -6965,7 +6965,10 @@
             }
 
             if (mode === 'edit' && !editorRestricted) editorAccessGranted = true;
-            if (mode === 'view') editorAccessGranted = false;
+            // Примечание: доступ к редактору (editorAccessGranted) больше НЕ сбрасывается
+            // здесь при переключении в просмотр. Однажды введённый пароль разблокирует
+            // кнопки на всё время сессии — скрытие кнопок происходит только при
+            // активации галочки «ограничить вход в редактор» (см. editorRestrictToggle).
 
             state.mode = mode;
 
@@ -8633,7 +8636,36 @@
                 }
             });
 
-            closeBtn.addEventListener('click', finishIntro);
+            // Крестик: закрывает стартовый экран, но, если рядом с страницей найден
+            // проект (project.json в репозитории или встроенный в HTML экспорт),
+            // всё равно автоматически его подгружает — как будто пользователь
+            // поймал кнопку «ЗАГРУЗИТЬ». Если проект не найден — просто закрываем
+            // заставку и переходим в пустой редактор/просмотр, как раньше.
+            let closeUsed = false;
+            closeBtn.addEventListener('click', () => {
+                if (closeUsed) return;
+                closeUsed = true;
+                window._introLoading = true;
+
+                function applyAndFinish(project) {
+                    if (project) {
+                        try { processLoadedData(project, false, true); } catch (err) { console.error(err); }
+                    }
+                    finishIntro();
+                }
+
+                if (window.__EMBEDDED_PROJECT__) {
+                    // Проект уже найден (встроен в HTML или подгружен из project.json)
+                    applyAndFinish(window.__EMBEDDED_PROJECT__);
+                } else if (window._projectAutoLoadPromise) {
+                    // Автозагрузка ещё может выполняться — дожидаемся результата
+                    window._projectAutoLoadPromise.then(applyAndFinish).catch(() => applyAndFinish(null));
+                } else {
+                    // Автозагрузки нет вовсе (например, это не viewer-экспорт) —
+                    // просто закрываем заставку без загрузки проекта
+                    applyAndFinish(null);
+                }
+            });
         })();
 
         // ===== УПРАВЛЕНИЕ СЛАЙДАМИ (МЕНЕДЖЕР) =====
@@ -8937,9 +8969,13 @@
 
             toggle.addEventListener('change', () => {
                 editorRestricted = toggle.checked;
-                // При любом изменении галочки сбрасываем ранее полученный доступ —
-                // пароль будет запрошен заново при следующем Alt+Q, если ограничение включено
-                editorAccessGranted = false;
+                // Сбрасываем ранее полученный доступ (и, как следствие, скрываем кнопки)
+                // только при АКТИВАЦИИ ограничения — пароль будет запрошен заново при
+                // следующей попытке входа в редактор. При снятии галочки доступ не трогаем.
+                if (toggle.checked) {
+                    editorAccessGranted = false;
+                    applyUiHiddenLevel();
+                }
                 autoSave();
                 updateSizePopupIfVisible();
             });
@@ -10592,7 +10628,10 @@
     <!-- ======================== АВТОЗАГРУЗКА ВНЕШНЕГО ПРОЕКТА (viewer) ======================== -->
     <script>
         (function() {
-            fetch('project.json', { cache: 'no-cache' })
+            // Промис доступен глобально, чтобы другие обработчики (например, крестик
+            // на стартовом экране) могли дождаться результата автозагрузки, даже если
+            // пользователь кликнул раньше, чем fetch успел завершиться.
+            window._projectAutoLoadPromise = fetch('project.json', { cache: 'no-cache' })
                 .then(function(r) {
                     if (!r.ok) throw new Error('HTTP ' + r.status);
                     return r.json();
@@ -10605,11 +10644,13 @@
                     // после этого (в обработчике клика по кнопке) проект будет
                     // применён и заставка исчезнет.
                     window.__EMBEDDED_PROJECT__ = data;
+                    return data;
                 })
                 .catch(function(err) {
                     // Если project.json не найден рядом со страницей — ничего страшного:
                     // когда пользователь поймает кнопку, откроется системное окно выбора файла проекта.
                     console.error('Не удалось загрузить project.json:', err);
+                    return null;
                 });
         })();
     </script>
