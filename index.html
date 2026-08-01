@@ -4,6 +4,19 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no" />
     <title>Постпространство</title>
+    <!-- ======================== СНИМОК ЧИСТОГО ШАБЛОНА СТРАНИЦЫ ======================== -->
+    <!-- Загружаем СЫРОЙ исходный HTML этой же страницы (как он лежит на диске/сервере),
+         пока проект ещё не отрендерен в DOM. Это нужно для функции «Сохранить для Pages»,
+         чтобы она сохраняла именно чистый шаблон приложения, а не текущий тяжёлый DOM
+         с уже отрисованными слайдами и встроенными медиаданными. -->
+    <script>
+        (function() {
+            fetch(location.href, { cache: 'no-cache' })
+                .then(function(r) { return r.ok ? r.text() : null; })
+                .then(function(text) { if (text) window.__PRISTINE_HTML__ = text; })
+                .catch(function() {});
+        })();
+    </script>
     <!-- PDF.js -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.min.js">
     </script>
@@ -9139,13 +9152,23 @@
                 };
                 zip.file('project.json', JSON.stringify(projectData));
 
-                // index.html — сама страница-просмотрщик (без встроенных данных),
-                // при открытии на Pages она сама подхватит project.json и media/ рядом
+                // index.html — сама страница-просмотрщик (чистый шаблон, без отрисованного
+                // проекта и без встроенных данных), при открытии на Pages она сама
+                // подхватит project.json и media/ рядом
                 loaderText.textContent = 'Сборка index.html...';
-                const oldScript = document.getElementById('embedded-data-script');
-                if (oldScript) oldScript.remove();
-                const htmlContent = document.documentElement.outerHTML;
-                zip.file('index.html', '<!DOCTYPE html>\n<html lang="ru">\n' + htmlContent);
+                let cleanHtml = window.__PRISTINE_HTML__;
+                if (cleanHtml) {
+                    // На всякий случай вырезаем возможный встроенный скрипт с данными проекта
+                    cleanHtml = cleanHtml.replace(/<script id="embedded-data-script">[\s\S]*?<\/script>\s*/i, '');
+                } else {
+                    // Резервный вариант, если чистый исходник не удалось загрузить
+                    // (например, страница открыта без сервера, напрямую с диска)
+                    showNotification('Не удалось получить чистый шаблон страницы — используется текущее состояние', 'error', 4000);
+                    const oldScript = document.getElementById('embedded-data-script');
+                    if (oldScript) oldScript.remove();
+                    cleanHtml = '<!DOCTYPE html>\n<html lang="ru">\n' + document.documentElement.outerHTML;
+                }
+                zip.file('index.html', cleanHtml);
 
                 loaderText.textContent = 'Сохранение архива...';
                 const blob = await zip.generateAsync({ type: 'blob' });
