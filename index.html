@@ -378,7 +378,7 @@
         #creaturesFloatingBtn { position: fixed; bottom: 20px; right: 20px; z-index: 999; background: var(--accent2); border: 1px solid var(--accent); color: #fff; padding: 10px 18px; border-radius: 30px; font-family: 'Courier New', monospace; font-size: 14px; font-weight: bold; letter-spacing: 1px; cursor: pointer; box-shadow: 0 4px 20px rgba(0, 0, 0, 0.5); transition: background 0.2s, transform 0.15s; display: block; }
         #creaturesFloatingBtn:hover { background: var(--accent); color: #14110c; transform: scale(1.05); }
         #creaturesToggleBtn { display: none !important; }
-        #confirmModal { position: fixed; inset: 0; z-index: 2000; background: rgba(0, 0, 0, 0.7); display: none; align-items: center; justify-content: center; backdrop-filter: blur(4px); }
+        #confirmModal { position: fixed; inset: 0; z-index: 10100; background: rgba(0, 0, 0, 0.7); display: none; align-items: center; justify-content: center; backdrop-filter: blur(4px); }
         #confirmModal.show { display: flex; }
         #confirmModal .modal-box { background: rgba(13, 10, 6, 0.97); border: 1px solid var(--accent); border-radius: 8px; padding: 24px 30px; max-width: 400px; width: 90%; box-shadow: 0 20px 60px rgba(0, 0, 0, 0.8); text-align: center; }
         #confirmModal .modal-box .modal-title { font-family: 'Courier New', monospace; font-size: 18px; color: var(--accent); margin-bottom: 12px; letter-spacing: 2px; }
@@ -389,7 +389,7 @@
         #confirmModal .modal-box .modal-buttons .modal-cancel:hover { background: var(--bg2); }
         #confirmModal .modal-box .modal-buttons .modal-confirm { background: var(--accent2); color: #fff; border-color: var(--accent); }
         #confirmModal .modal-box .modal-buttons .modal-confirm:hover { background: var(--accent); color: #14110c; }
-        #passwordModal { position: fixed; inset: 0; z-index: 2100; background: rgba(0, 0, 0, 0.75); display: none; align-items: center; justify-content: center; backdrop-filter: blur(4px); }
+        #passwordModal { position: fixed; inset: 0; z-index: 10150; background: rgba(0, 0, 0, 0.75); display: none; align-items: center; justify-content: center; backdrop-filter: blur(4px); }
         #passwordModal.show { display: flex; }
         #passwordModal .modal-box { background: rgba(13, 10, 6, 0.97); border: 1px solid var(--accent); border-radius: 8px; padding: 28px 34px; max-width: 400px; width: 90%; box-shadow: 0 20px 60px rgba(0, 0, 0, 0.8); text-align: center; position: relative; }
         #passwordModal .modal-box .modal-close { position: absolute; top: 12px; right: 16px; background: none; border: none; color: var(--muted); font-size: 22px; cursor: pointer; transition: color 0.2s; font-family: monospace; padding: 0 6px; line-height: 1; }
@@ -409,7 +409,7 @@
         #passwordModal .modal-box .modal-buttons .modal-confirm { background: var(--accent2); color: #fff; border-color: var(--accent); }
         #passwordModal .modal-box .modal-buttons .modal-confirm:hover { background: var(--accent); color: #14110c; }
         #passwordModal .modal-box .modal-error { color: var(--accent2); font-size: 13px; margin-top: 8px; min-height: 20px; font-family: 'Courier New', monospace; }
-        #loadingOverlay { position: fixed; inset: 0; z-index: 3000; background: rgba(8, 6, 4, 0.92); display: none; align-items: center; justify-content: center; flex-direction: column; gap: 20px; backdrop-filter: blur(6px); }
+        #loadingOverlay { position: fixed; inset: 0; z-index: 20000; background: rgba(8, 6, 4, 0.92); display: none; align-items: center; justify-content: center; flex-direction: column; gap: 20px; backdrop-filter: blur(6px); }
         #loadingOverlay.show { display: flex; }
         #loadingOverlay .loader-text { font-family: 'Courier New', monospace; font-size: 22px; letter-spacing: 4px; color: var(--accent); animation: loaderPulse 1.4s ease-in-out infinite; }
         #loadingOverlay .loader-spinner { width: 48px; height: 48px; border: 3px solid var(--border); border-top-color: var(--accent); border-radius: 50%; animation: spin 0.9s linear infinite; }
@@ -450,7 +450,7 @@
         .slide-manager-btn { position: fixed; bottom: 44px; left: 50%; transform: translateX(-50%); z-index: 100; background: rgba(13, 10, 6, 0.95); border: 1px solid var(--accent); color: var(--accent); padding: 8px 20px; border-radius: 4px; font-family: 'Courier New', monospace; font-size: 13px; font-weight: bold; letter-spacing: 1px; cursor: pointer; transition: all 0.2s; box-shadow: 0 4px 20px rgba(0, 0, 0, 0.7); }
         .slide-manager-btn:hover { background: var(--accent); color: #14110c; transform: translateX(-50%) scale(1.05); }
         body.view-mode .slide-manager-btn { display: none !important; }
-        #smModal { position: fixed; inset: 0; z-index: 2500; background: rgba(0, 0, 0, 0.6); display: none; align-items: flex-end; justify-content: center; backdrop-filter: blur(4px); opacity: 0; transition: opacity 0.3s ease; }
+        #smModal { position: fixed; inset: 0; z-index: 10050; background: rgba(0, 0, 0, 0.6); display: none; align-items: flex-end; justify-content: center; backdrop-filter: blur(4px); opacity: 0; transition: opacity 0.3s ease; }
         #smModal.show { display: flex; opacity: 1; }
         .sm-box { background: rgba(13, 10, 6, 0.97); border-top: 2px solid var(--accent); border-radius: 12px 12px 0 0; width: 100%; max-width: 100%; display: flex; flex-direction: column; box-shadow: 0 -10px 40px rgba(0, 0, 0, 0.8); transform: translateY(100%); transition: transform 0.4s cubic-bezier(0.2, 0.9, 0.4, 1.1); }
         #smModal.show .sm-box { transform: translateY(0); }
@@ -602,9 +602,6 @@
         }
         html.is-touch .swatch:hover { transform: none; }
 
-        /* ============================================================
-           Иконки-кнопки в шапке (глазик и «на весь экран»)
-           ============================================================ */
         .icon-btn, .action-buttons .icon-btn {
             display: inline-flex; align-items: center; justify-content: center;
             width: 36px; height: 34px; min-width: 36px; padding: 0; box-sizing: border-box;
@@ -622,7 +619,6 @@
         }
         .icon-btn:active { transform: scale(.93); }
 
-        /* На Android текстовые кнопки панели ниже (≈26px) — иконки подгоняем под них */
         html.is-touch .topbar .icon-btn,
         html.is-touch .topbar .action-buttons .icon-btn {
             height: 26px; width: 32px; min-width: 32px; padding: 0;
@@ -630,7 +626,6 @@
         html.is-touch #eyeToggleBtn svg { width: 20px; height: 14px; }
         html.is-touch #fullscreenBtn svg { width: 16px; height: 16px; }
 
-        /* Глазик: виден и на ПК, и на телефоне — только в режиме просмотра */
         #eyeToggleBtn { display: none; }
         body.view-mode #eyeToggleBtn { display: inline-flex; }
 
@@ -730,7 +725,6 @@
             }
         }
 
-        /* Настройки (Alt+Q) на Android: скролл и высота */
         html.is-touch #sizePopup {
             top: 60px;
             right: 8px;
@@ -1056,7 +1050,6 @@
             { name: 'Оригинальный', bg: '#ffffff', text: '#14110c', icon: '🍉', original: true }
         ];
 
-        // Иконки глазиков для полей ввода пароля (в стиле панельного глаза)
         const SVG_EYE_OPEN_PW = '<svg viewBox="0 0 24 16" width="18" height="12" fill="none" aria-hidden="true"><path d="M1 8 C6 2.6 10 1.6 12 1.6 C14 1.6 18 2.6 23 8 C18 13.4 14 14.4 12 14.4 C10 14.4 6 13.4 1 8 Z" stroke="currentColor" stroke-width="1.5" stroke-linejoin="round"/><circle cx="12" cy="8" r="3.3" stroke="currentColor" stroke-width="1.3"/><path d="M12 5.5 Q13.3 8 12 10.5 Q10.7 8 12 5.5 Z" fill="currentColor"/><circle cx="13.2" cy="6.9" r="0.55" fill="#14110c"/></svg>';
         const SVG_EYE_SLASHED_PW = '<svg viewBox="0 0 24 16" width="18" height="12" fill="none" aria-hidden="true"><path d="M1 8 C6 2.6 10 1.6 12 1.6 C14 1.6 18 2.6 23 8 C18 13.4 14 14.4 12 14.4 C10 14.4 6 13.4 1 8 Z" stroke="currentColor" stroke-width="1.5" stroke-linejoin="round"/><circle cx="12" cy="8" r="3.3" stroke="currentColor" stroke-width="1.3"/><path d="M12 5.5 Q13.3 8 12 10.5 Q10.7 8 12 5.5 Z" fill="currentColor"/><circle cx="13.2" cy="6.9" r="0.55" fill="#14110c"/><line x1="3" y1="0.6" x2="21" y2="15.4" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/></svg>';
 
@@ -4110,10 +4103,14 @@
             });
         }
 
+        // ============================================================
+        //  addSlide: вставляет новый слайд СРАЗУ ПОСЛЕ текущего
+        // ============================================================
         function addSlide() {
-            state.slides.push({ bgPreset: 'bg-stagnation', items: [] });
+            const insertAt = state.current + 1;
+            state.slides.splice(insertAt, 0, { bgPreset: 'bg-stagnation', items: [] });
             fullRender();
-            goToSlide(state.slides.length - 1, true);
+            goToSlide(insertAt, true);
             updateSizePopupIfVisible();
         }
 
@@ -4646,7 +4643,6 @@
             if (pl) pl.remove();
         });
 
-        // === Непрерывный просмотр: общие функции для PDF и DOC ===
         const CV_PAD = 20;
 
         function cvPageFromScroll(el, v) {
@@ -6475,9 +6471,6 @@
             }
         });
 
-        // ============================================================
-        // === Свайпы в документе (Android): влево/вправо — страницы ===
-        // ============================================================
         function attachSwipePaging(scrollEl, nextFn, prevFn) {
             if (!scrollEl || !IS_TOUCH) return;
             let sx = 0, sy = 0, st = 0, sLeft = 0, multi = false;
@@ -6516,10 +6509,6 @@
             isOpen: () => document.getElementById('docViewer').classList.contains('show'),
             close: closeDocViewer, zoom: docZoom, onScroll: docUpdateCurrent
         });
-
-        // ============================================================
-        // === ANDROID/TOUCH: дополнительные инициализации ============
-        // ============================================================
 
         (function initTouchScrollSync() {
             if (!IS_TOUCH) return;
@@ -6642,9 +6631,6 @@
             }, { passive: true, capture: true });
         }
 
-        // ============================================================
-        // === Двухпальцевые жесты: перелистывание и открытие =========
-        // ============================================================
         (function initTwoFingerGestures() {
             if (!IS_TOUCH) return;
             let startT1 = null, startT2 = null;
