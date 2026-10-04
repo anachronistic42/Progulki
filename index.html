@@ -4,7 +4,6 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover" />
     <title>Постпространство</title>
-    <!-- === ANDROID: ранняя установка классов на <html> для CSS === -->
     <script>
         (function() {
             var ua = navigator.userAgent || '';
@@ -16,7 +15,6 @@
             if (isTouch) document.documentElement.classList.add('is-touch');
         })();
     </script>
-    <!-- ЛЕНИВАЯ ЗАГРУЗКА ЧИСТОГО ШАБЛОНА -->
     <script>
         window.__getPristineHtml__ = function() {
             if (window.__PRISTINE_HTML__) return Promise.resolve(window.__PRISTINE_HTML__);
@@ -29,20 +27,15 @@
                 .catch(function() { return null; });
         };
     </script>
-    <!-- PDF.js -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.min.js"></script>
-    <!-- html2canvas -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
     <script>
         if (window.pdfjsLib) {
             pdfjsLib.GlobalWorkerOptions.workerSrc = 'https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.worker.min.js';
         }
     </script>
-    <!-- JSZip -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min.js"></script>
-    <!-- mammoth -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/mammoth/1.6.0/mammoth.browser.min.js"></script>
-    <!-- Three.js -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/three@0.128.0/examples/js/controls/OrbitControls.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/fflate@0.7.4/umd/index.js"></script>
@@ -109,7 +102,7 @@
         .vignette { position: fixed; inset: 0; z-index: 49; pointer-events: none; background: radial-gradient(ellipse at center, transparent 55%, rgba(0, 0, 0, 0.55) 100%); }
         .scratches { position: fixed; inset: 0; z-index: 51; pointer-events: none; opacity: 0.10; background-image: linear-gradient(90deg, transparent 49.8%, rgba(255, 255, 255, 0.5) 50%, transparent 50.2%), linear-gradient(90deg, transparent 19.9%, rgba(255, 255, 255, 0.3) 20%, transparent 20.1%), linear-gradient(90deg, transparent 79.9%, rgba(200, 200, 180, 0.25) 80%, transparent 80.1%); animation: scratchMove 6s linear infinite; }
         @keyframes scratchMove { from { transform: translateX(0); } to { transform: translateX(40px); } }
-        .scroll-container { display: flex; height: 100vh; overflow-x: auto; overflow-y: hidden; scroll-snap-type: x mandatory; padding-top: 0; -webkit-overflow-scrolling: touch; }
+        .scroll-container { display: flex; height: 100vh; overflow-x: auto; overflow-y: hidden; scroll-snap-type: x mandatory; padding-top: 0; -webkit-overflow-scrolling: touch; overscroll-behavior-x: contain; }
         .scroll-container::-webkit-scrollbar { height: 8px; }
         .scroll-container::-webkit-scrollbar-track { background: #0d0a06; }
         .scroll-container::-webkit-scrollbar-thumb { background: var(--accent2); border-radius: 4px; }
@@ -438,7 +431,7 @@
         .pdf-toolbar .theme-swatch:hover { border-color: var(--accent); }
         .pdf-toolbar .theme-swatch.active { border-color: var(--accent); box-shadow: 0 0 8px var(--accent); }
         .pdf-toolbar .pdf-label { color: var(--muted); font-size: 11px; font-family: monospace; }
-        .pdf-scroll { flex: 1; overflow: auto; display: flex; justify-content: center; align-items: flex-start; padding: 20px; scrollbar-width: thin; scrollbar-color: var(--accent2) #0d0a06; }
+        .pdf-scroll { flex: 1; overflow: auto; display: flex; justify-content: center; align-items: flex-start; padding: 20px; scrollbar-width: thin; scrollbar-color: var(--accent2) #0d0a06; overscroll-behavior: contain; touch-action: pan-x pan-y; }
         .pdf-scroll::-webkit-scrollbar { width: 8px; }
         .pdf-scroll::-webkit-scrollbar-track { background: #0d0a06; }
         .pdf-scroll::-webkit-scrollbar-thumb { background: var(--accent2); border-radius: 4px; }
@@ -550,9 +543,6 @@
         }
         html.is-touch, html.is-touch body { -webkit-text-size-adjust: 100%; text-size-adjust: 100%; overscroll-behavior: none; }
 
-        /* ============================================================
-           ANDROID: обёртка верхней панели, кнопки, слайдеры
-           ============================================================ */
         html.is-touch .topbar {
             height: auto;
             min-height: 52px;
@@ -581,27 +571,6 @@
         }
         .topbar-right.ui-hidden .action-buttons { display: none !important; }
 
-        /* Глазик — только на тач-устройствах */
-        #eyeToggleBtn {
-            display: none;
-            background: rgba(20, 17, 12, 0.8);
-            border: 1px solid var(--border);
-            color: var(--accent);
-            padding: 7px 12px;
-            border-radius: 4px;
-            cursor: pointer;
-            font-family: 'Courier New', monospace;
-            transition: background 0.2s, color 0.2s, border-color 0.2s;
-            line-height: 1;
-            align-items: center;
-            justify-content: center;
-        }
-        #eyeToggleBtn svg { display: block; }
-        html.is-touch #eyeToggleBtn {
-            display: inline-flex;
-            padding: 6px 9px;
-        }
-        html.is-touch #eyeToggleBtn:hover { background: rgba(200, 162, 74, 0.15); color: var(--accent); }
         html.is-touch #gearSettingsBtn { display: inline-block; }
         html.is-touch #settingsTopBtn  { display: none !important; }
         #gearSettingsBtn { display: none; }
@@ -629,18 +598,40 @@
         }
         html.is-touch .swatch:hover { transform: none; }
 
-        /* Кнопка «на весь экран» — только иконка */
-        #fullscreenBtn {
-            font-family: "Segoe UI Symbol", "Arial Unicode MS", sans-serif;
-            font-size: 16px; line-height: 1;
-            min-width: 34px; padding: 4px 8px;
-        }
-
         /* ============================================================
-           Откат hover-подсветок на тач-устройствах.
-           ВАЖНО: селектор :not(.active) — чтобы не гасить активные
-           переключатели (ПЕРЕТАСКИВАНИЕ, чёрные поля, перфорации, и т.д.)
+           Иконки-кнопки в шапке (глазик и «на весь экран»)
            ============================================================ */
+        .icon-btn, .action-buttons .icon-btn {
+            display: inline-flex; align-items: center; justify-content: center;
+            width: 36px; height: 30px; min-width: 36px; padding: 0;
+            background: rgba(20, 17, 12, 0.8);
+            border: 1px solid var(--border); border-radius: 4px;
+            color: var(--accent); cursor: pointer;
+            transition: background .2s, border-color .2s, color .2s, box-shadow .2s, transform .1s;
+        }
+        .icon-btn svg { width: 20px; height: 20px; display: block; overflow: visible;
+                        filter: drop-shadow(0 0 3px rgba(200, 162, 74, .35)); }
+        #eyeToggleBtn svg { width: 24px; height: 17px; }
+        .icon-btn:hover, .action-buttons .icon-btn:hover {
+            background: rgba(200, 162, 74, .14); border-color: var(--accent);
+            color: #e6c566; box-shadow: 0 0 10px rgba(200, 162, 74, .25);
+        }
+        .icon-btn:active { transform: scale(.93); }
+
+        /* Глазик: виден и на ПК, и на телефоне — только в режиме просмотра */
+        #eyeToggleBtn { display: none; }
+        body.view-mode #eyeToggleBtn { display: inline-flex; }
+
+        #eyeToggleBtn .e-closed { display: none; }
+        #eyeToggleBtn[data-level="1"] .e-iris   { opacity: .45; }
+        #eyeToggleBtn[data-level="1"] .e-lashes { opacity: .45; }
+        #eyeToggleBtn[data-level="2"] .e-open   { display: none; }
+        #eyeToggleBtn[data-level="2"] .e-closed { display: inline; }
+
+        #fullscreenBtn .fs-out { display: none; }
+        #fullscreenBtn.is-fs .fs-in  { display: none; }
+        #fullscreenBtn.is-fs .fs-out { display: inline; }
+
         @media (hover: none) {
             html.is-touch .btn:not(.active):hover,
             html.is-touch .tool-btn:not(.active):hover,
@@ -656,8 +647,7 @@
             html.is-touch .sm-actions button:hover,
             html.is-touch #sizePopup .size-btn:hover,
             html.is-touch #sizePopup .popup-btn:not(.active):hover,
-            html.is-touch .audio-play-btn:not(.playing):hover,
-            html.is-touch #eyeToggleBtn:hover {
+            html.is-touch .audio-play-btn:not(.playing):hover {
                 background: rgba(20, 17, 12, 0.85);
                 color: var(--text);
                 border-color: var(--border);
@@ -683,7 +673,6 @@
             html.is-touch #creaturesFloatingBtn:hover { background: var(--accent2); color: #fff; transform: none; }
             html.is-touch .viewer-3d-controls button:not(.active):hover { background: #14110c; }
 
-            /* Финальная гарантия: любые активные состояния остаются горящими */
             html.is-touch .action-buttons button.active,
             html.is-touch .action-buttons button.active:hover,
             html.is-touch .mode-toggle button.active,
@@ -719,11 +708,17 @@
                 border-color: var(--accent2) !important;
                 color: #fff !important;
             }
+
+            /* Тач-откат hover не должен перекрашивать иконки */
+            html.is-touch .action-buttons .icon-btn:hover,
+            html.is-touch #eyeToggleBtn:hover {
+                background: rgba(20, 17, 12, .8) !important;
+                color: var(--accent) !important;
+                border-color: var(--border) !important;
+                box-shadow: none !important;
+            }
         }
 
-        /* ============================================================
-           Слайдер страниц документа / PDF
-           ============================================================ */
         .page-slider {
             position: absolute; right: 8px; top: 66px; bottom: 16px;
             width: 12px; background: rgba(20, 17, 12, 0.55);
@@ -744,9 +739,7 @@
         }
         html.is-touch .page-slider { width: 16px; right: 4px; }
 
-        /* ============================================================
-           Настройки (Alt+Q) на Android: не вылезают за экран, скроллятся
-           ============================================================ */
+        /* Настройки (Alt+Q) на Android: скролл и высота */
         html.is-touch #sizePopup {
             top: 60px;
             right: 8px;
@@ -760,6 +753,9 @@
         html.is-touch #sizePopup::-webkit-scrollbar { width: 4px; }
         html.is-touch #sizePopup::-webkit-scrollbar-track { background: transparent; }
         html.is-touch #sizePopup::-webkit-scrollbar-thumb { background: var(--accent2); border-radius: 4px; }
+
+        /* Пока открыт просмотрщик — слайды не листаются и элементы не реагируют */
+        body.viewer-open #scroller { pointer-events: none !important; touch-action: none !important; }
     </style>
 </head>
 <body class="edit-mode">
@@ -793,14 +789,26 @@
             </div>
         </div>
         <div class="topbar-right">
-            <button id="eyeToggleBtn" title="Скрыть/показать интерфейс (F)" aria-label="Скрыть интерфейс">
-                <svg viewBox="0 0 26 16" width="20" height="12" fill="none" aria-hidden="true">
-                    <path d="M1 8 Q13 0 25 8 Q13 16 1 8 Z"
-                          stroke="currentColor" stroke-width="1.6"
-                          stroke-linejoin="round" fill="none"/>
-                    <path d="M13 4.2 Q14.9 8 13 11.8 Q11.1 8 13 4.2 Z"
-                          fill="currentColor" fill-opacity="0.95"/>
-                    <circle cx="13" cy="8" r="0.9" fill="#0d0a06" stroke="none"/>
+            <button id="eyeToggleBtn" class="icon-btn" data-level="0"
+                    title="Скрыть/показать интерфейс (F)" aria-label="Скрыть интерфейс">
+                <svg viewBox="0 0 32 22" fill="none" aria-hidden="true">
+                    <g class="e-open" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round">
+                        <path d="M2 11 C7 4.5 12 3.2 16 3.2 C20 3.2 25 4.5 30 11 C25 17.5 20 18.8 16 18.8 C12 18.8 7 17.5 2 11 Z" stroke-width="1.5"/>
+                        <g class="e-lashes" stroke-width="1.2">
+                            <path d="M10 5.4 L8.7 3"/><path d="M16 3.4 V0.8"/><path d="M22 5.4 L23.3 3"/>
+                        </g>
+                        <g class="e-iris">
+                            <circle cx="16" cy="11" r="4.7" stroke-width="1.3"/>
+                            <path d="M16 7.4 Q17.9 11 16 14.6 Q14.1 11 16 7.4 Z" fill="currentColor" stroke="none"/>
+                            <circle cx="17.6" cy="9.4" r="0.7" fill="#14110c" stroke="none"/>
+                        </g>
+                    </g>
+                    <g class="e-closed" stroke="currentColor" stroke-linecap="round" stroke-width="1.5">
+                        <path d="M2 9.5 C7 16 12 17.8 16 17.8 C20 17.8 25 16 30 9.5"/>
+                        <path d="M9 15.2 L7.8 17.6" stroke-width="1.2"/>
+                        <path d="M16 17.6 V20.4" stroke-width="1.2"/>
+                        <path d="M23 15.2 L24.2 17.6" stroke-width="1.2"/>
+                    </g>
                 </svg>
             </button>
             <div class="action-buttons" id="viewActions" style="display: none;">
@@ -811,7 +819,14 @@
                 <button id="gearSettingsBtn" title="Настройки (Alt+Q)">⚙</button>
                 <button id="settingsTopBtn" style="display:none;">НАСТРОЙКИ</button>
                 <button id="perfToggleBtn">ВКЛ ОПТИМИЗАЦИЮ</button>
-                <button id="fullscreenBtn" title="На весь экран">⛶</button>
+                <button id="fullscreenBtn" class="icon-btn" title="На весь экран" aria-label="На весь экран">
+                    <svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.6"
+                         stroke-linecap="square" aria-hidden="true">
+                        <path class="fs-in"  d="M3 7.5 V3 H7.5 M12.5 3 H17 V7.5 M17 12.5 V17 H12.5 M7.5 17 H3 V12.5"/>
+                        <path class="fs-out" d="M7.5 3 V7.5 H3 M17 7.5 H12.5 V3 M12.5 17 V12.5 H17 M3 12.5 H7.5 V17"/>
+                        <path d="M10 7.8 L12.2 10 L10 12.2 L7.8 10 Z" fill="currentColor" stroke="none"/>
+                    </svg>
+                </button>
                 <button id="saveBtn">СОХРАНИТЬ</button>
                 <button id="loadBtn">ЗАГРУЗИТЬ</button>
             </div>
@@ -1083,6 +1098,25 @@
         function setWillChange(el) { el.style.willChange = 'transform'; }
         function unsetWillChange(el) { el.style.willChange = ''; }
 
+        // Общий помощник: открыт ли какой-либо просмотрщик
+        function isAnyViewerOpen() {
+            return ['viewer', 'pdfViewer', 'docViewer'].some(id => {
+                const el = document.getElementById(id);
+                return el && el.classList.contains('show');
+            });
+        }
+
+        // Класс viewer-open на body, пока открыт любой просмотрщик
+        (function initViewerOpenWatcher() {
+            const sync = () => document.body.classList.toggle('viewer-open', isAnyViewerOpen());
+            ['viewer', 'pdfViewer', 'docViewer'].forEach(id => {
+                const el = document.getElementById(id);
+                if (el && typeof MutationObserver !== 'undefined') {
+                    new MutationObserver(sync).observe(el, { attributes: true, attributeFilter: ['class'] });
+                }
+            });
+        })();
+
         function updateFrameScale() {
             const availW = window.innerWidth;
             if (IS_TOUCH) {
@@ -1200,6 +1234,12 @@
             if (uiHiddenLevel === 2) {
                 tbCenter.style.display = 'none';
                 tbRight.classList.add('ui-hidden');
+            }
+
+            const eyeBtn = document.getElementById('eyeToggleBtn');
+            if (eyeBtn) {
+                eyeBtn.dataset.level = String(uiHiddenLevel);
+                eyeBtn.setAttribute('aria-label', uiHiddenLevel === 2 ? 'Показать интерфейс' : 'Скрыть интерфейс');
             }
         }
 
@@ -1492,8 +1532,6 @@
             };
 
             const oldContent = item.content;
-            const oldPlate = item.plate;
-            const oldNoFrame = item.noFrame;
 
             const docProps = {};
             if (['pdf', 'doc', 'docx', 'txt'].includes(type)) {
@@ -2513,6 +2551,23 @@
                 if (isEditing && e.target.closest('.caption, .text-body') && e.target.isContentEditable) return;
                 e.preventDefault();
 
+                // Просмотр + палец: ждём 70 мс — вдруг это начало двухпальцевого жеста
+                if (isView && IS_TOUCH && e.pointerType === 'touch') {
+                    const snap = { clientX: e.clientX, clientY: e.clientY, pointerId: e.pointerId,
+                                   button: e.button, pointerType: e.pointerType };
+                    let released = false;
+                    const onUp = () => { released = true; };
+                    document.addEventListener('pointerup', onUp, { once: true });
+                    document.addEventListener('pointercancel', onUp, { once: true });
+                    setTimeout(() => {
+                        document.removeEventListener('pointerup', onUp);
+                        document.removeEventListener('pointercancel', onUp);
+                        if (window.__multiTouchActive || released) return;
+                        startViewDrag(el, item, snap);
+                    }, 70);
+                    return;
+                }
+
                 if (isView) startViewDrag(el, item, e);
                 else if (isEditing) startEditDrag(el, item, e);
             });
@@ -2549,7 +2604,7 @@
             if (IS_TOUCH) {
                 el.addEventListener('touchend', (e) => {
                     if (state.mode !== 'view') return;
-                    if (window.__multiTouchActive) return;
+                    if (window.__multiTouchActive) { lastTapTime = 0; return; }
                     const now = Date.now();
                     if (now - lastTapTime < 350) {
                         e.preventDefault();
@@ -3850,7 +3905,10 @@
             updateSizePopupIfVisible();
         }
 
-        function navSlide(dir) { goToSlide(state.current + dir, true, dir); }
+        function navSlide(dir) {
+            if (isAnyViewerOpen()) return;
+            goToSlide(state.current + dir, true, dir);
+        }
 
         function autoSave() { updateSizePopupIfVisible(); }
 
@@ -4597,8 +4655,12 @@
         const pdfV = {
             doc: null, page: 1, total: 1,
             zoomMode: 'fit', zoomValue: 1.0, currentScale: 1.0, lastUserZoom: 1.0,
-            item: null, rendering: false
+            item: null, rendering: false, anchor: null
         };
+
+        // === PDF-кэш для отрисовки без моргания ===
+        const pdfBitmapCache = new Map();
+        let pdfRenderToken = 0;
 
         function dataUrlToUint8(dataUrl) {
             const raw = atob(dataUrl.split(',')[1]);
@@ -4622,6 +4684,7 @@
             if (!window.pdfjsLib) { alert('PDF.js не загружен'); return; }
             pdfV.item = item;
             pdfV.page = 1;
+            pdfV.anchor = null;
             if (item.pdfZoomMode) { pdfV.zoomMode = item.pdfZoomMode; pdfV.zoomValue = item.pdfZoomValue || 1.0; }
             else { pdfV.zoomMode = 'fit'; pdfV.zoomValue = 1.0; }
             pdfV.currentScale = 1.0;
@@ -4645,7 +4708,9 @@
             document.getElementById('pdfViewer').classList.remove('show');
             pdfV.doc = null;
             pdfV.item = null;
+            pdfV.anchor = null;
             document.getElementById('pdfTextLayer').innerHTML = '';
+            pdfBitmapCache.clear();
             updateSizePopupIfVisible();
         }
 
@@ -4657,47 +4722,96 @@
             return Math.min(availW / vp1.width, availH / vp1.height);
         }
 
+        function pdfCacheKey(pageNum, scale, ratio) {
+            const it = pdfV.item;
+            return [pageNum, scale.toFixed(3), ratio,
+                    it.pdfOriginal ? 'orig' : (it.pdfBg + '|' + it.pdfText)].join('~');
+        }
+
+        function computePdfScale(page) {
+            if (pdfV.zoomMode === 'fit') return computeFitScale(page);
+            if (pdfV.zoomMode === '160') return 1.6;
+            return pdfV.zoomValue;
+        }
+
+        // Готовит страницу целиком (с перекраской) во внешнем canvas
+        function buildPdfBitmap(pageNum) {
+            return pdfV.doc.getPage(pageNum).then(page => {
+                const scale = computePdfScale(page);
+                const ratio = window.devicePixelRatio || 1;
+                const key = pdfCacheKey(pageNum, scale, ratio);
+                if (pdfBitmapCache.has(key)) return { page, scale, key, bmp: pdfBitmapCache.get(key) };
+
+                const vp = page.getViewport({ scale });
+                const off = document.createElement('canvas');
+                off.width = Math.round(vp.width * ratio);
+                off.height = Math.round(vp.height * ratio);
+                const octx = off.getContext('2d');
+                octx.setTransform(ratio, 0, 0, ratio, 0, 0);
+                const it = pdfV.item;
+                const bg = it.pdfOriginal ? '#ffffff' : (it.pdfBg || '#ffffff');
+
+                return page.render({ canvasContext: octx, viewport: vp, background: bg }).promise.then(() => {
+                    if (!it.pdfOriginal && it.pdfText) tintCanvas(off, it.pdfText, bg);
+                    pdfBitmapCache.set(key, off);
+                    if (pdfBitmapCache.size > 6) pdfBitmapCache.delete(pdfBitmapCache.keys().next().value);
+                    return { page, scale, key, bmp: off };
+                });
+            });
+        }
+
         function renderPdfPage() {
-            if (!pdfV.doc || pdfV.rendering) return;
-            pdfV.rendering = true;
-            pdfV.doc.getPage(pdfV.page).then(page => {
-                let scale;
-                if (pdfV.zoomMode === 'fit') scale = computeFitScale(page);
-                else if (pdfV.zoomMode === '160') scale = 1.6;
-                else scale = pdfV.zoomValue;
+            if (!pdfV.doc || !pdfV.item) return;
+            const token = ++pdfRenderToken;
+            const pageNum = pdfV.page;
+            updatePdfUI();
+
+            buildPdfBitmap(pageNum).then(({ page, scale, bmp }) => {
+                if (token !== pdfRenderToken || !pdfV.item) return;
+
                 pdfV.currentScale = scale;
                 if (pdfV.zoomMode !== 'custom') pdfV.zoomValue = scale;
 
                 const vp = page.getViewport({ scale });
                 const canvas = document.getElementById('pdfCanvas');
                 const holder = document.getElementById('pdfPageHolder');
-                const ctx = canvas.getContext('2d');
-                const ratio = window.devicePixelRatio || 1;
-                canvas.width = vp.width * ratio;
-                canvas.height = vp.height * ratio;
+
+                // Всё ниже — в одном синхронном блоке: браузер не успеет показать «пустой» кадр
+                canvas.width = bmp.width;
+                canvas.height = bmp.height;
+                canvas.getContext('2d').drawImage(bmp, 0, 0);
                 canvas.style.width = vp.width + 'px';
                 canvas.style.height = vp.height + 'px';
                 holder.style.width = vp.width + 'px';
                 holder.style.height = vp.height + 'px';
-                ctx.setTransform(ratio, 0, 0, ratio, 0, 0);
+                applyPdfColors();
 
-                const bg = pdfV.item.pdfOriginal ? '#ffffff' : (pdfV.item.pdfBg || '#ffffff');
-                page.render({ canvasContext: ctx, viewport: vp, background: bg }).promise.then(() => {
-                    renderPdfTextLayer(page, vp);
-                    pdfV.rendering = false;
-                    applyPdfColors();
-                    if (pdfPageSlider) pdfPageSlider.update();
-                }).catch(() => { pdfV.rendering = false; });
+                const s = document.getElementById('pdfScroll');
+                if (s && pdfV.anchor) {
+                    s.scrollTop = pdfV.anchor === 'bottom' ? s.scrollHeight : 0;
+                    pdfV.anchor = null;
+                }
+
+                renderPdfTextLayer(page, vp);
                 updatePdfUI();
-            });
+                if (pdfPageSlider) pdfPageSlider.update();
+
+                [pageNum + 1, pageNum - 1].forEach(n => {
+                    if (n >= 1 && n <= pdfV.total) setTimeout(() => {
+                        if (token === pdfRenderToken && pdfV.doc) buildPdfBitmap(n).catch(() => {});
+                    }, 60);
+                });
+            }).catch(() => {});
         }
 
         function renderPdfTextLayer(page, vp) {
             const layer = document.getElementById('pdfTextLayer');
-            layer.innerHTML = '';
+            const myToken = pdfRenderToken;
             layer.style.width = vp.width + 'px';
             layer.style.height = vp.height + 'px';
             page.getTextContent().then(tc => {
+                if (myToken !== pdfRenderToken) return;
+                const frag = document.createDocumentFragment();
                 tc.items.forEach(it => {
                     const span = document.createElement('span');
                     const tx = pdfjsLib.Util.transform(vp.transform, it.transform);
@@ -4707,8 +4821,9 @@
                     span.style.top = (tx[5] - fontSize) + 'px';
                     span.style.fontSize = fontSize + 'px';
                     span.style.fontFamily = 'sans-serif';
-                    layer.appendChild(span);
+                    frag.appendChild(span);
                 });
+                layer.replaceChildren(frag);
             });
         }
 
@@ -4720,21 +4835,18 @@
             else zd.textContent = Math.round(pdfV.zoomValue * 100) + '%';
         }
 
-        // === Стрелки/свайпы: всегда показываем верх страницы при смене страницы ===
         function pdfNext() {
             if (pdfV.page < pdfV.total) {
                 pdfV.page++;
+                pdfV.anchor = 'top';
                 renderPdfPage();
-                const s = document.getElementById('pdfScroll');
-                if (s) s.scrollTop = 0;
             }
         }
-        function pdfPrev() {
+        function pdfPrev(fromBottom = false) {
             if (pdfV.page > 1) {
                 pdfV.page--;
+                pdfV.anchor = (fromBottom === true) ? 'bottom' : 'top';
                 renderPdfPage();
-                const s = document.getElementById('pdfScroll');
-                if (s) s.scrollTop = 0;
             }
         }
 
@@ -4770,6 +4882,7 @@
                     pdfV.item.pdfBg = theme.bg;
                     pdfV.item.pdfText = theme.text;
                     pdfV.item.pdfOriginal = !!theme.original;
+                    pdfBitmapCache.clear();
                     applyPdfColors();
                     renderPdfPage();
                     autoSave();
@@ -4784,27 +4897,20 @@
         function applyPdfColors() {
             const holder = document.getElementById('pdfPageHolder');
             const canvas = document.getElementById('pdfCanvas');
-            if (pdfV.item.pdfOriginal) { holder.style.background = '#ffffff'; canvas.style.filter = ''; delete canvas.dataset.tint; return; }
-            const bg = pdfV.item.pdfBg || '#ffffff';
-            holder.style.background = bg;
-            if (pdfV.item.pdfText) { canvas.dataset.tint = pdfV.item.pdfText; applyTextTint(); }
-            else { canvas.style.filter = ''; delete canvas.dataset.tint; }
+            canvas.style.filter = '';
+            holder.style.background = pdfV.item.pdfOriginal ? '#ffffff' : (pdfV.item.pdfBg || '#ffffff');
         }
 
-        function applyTextTint() {
-            const canvas = document.getElementById('pdfCanvas');
-            const tint = canvas.dataset.tint;
-            if (!tint) return;
+        function tintCanvas(canvas, tint, bgHex) {
             const ctx = canvas.getContext('2d');
             try {
                 const img = ctx.getImageData(0, 0, canvas.width, canvas.height);
                 const d = img.data;
-                const tc = hexToRgb(tint);
-                const bg = hexToRgb(pdfV.item.pdfBg || '#ffffff');
+                const tc = hexToRgb(tint), bg = hexToRgb(bgHex);
                 for (let i = 0; i < d.length; i += 4) {
-                    const lum = (d[i] * 0.299 + d[i + 1] * 0.587 + d[i + 2] * 0.114);
+                    const lum = d[i] * 0.299 + d[i + 1] * 0.587 + d[i + 2] * 0.114;
                     const t = 1 - lum / 255;
-                    d[i] = Math.round(bg.r + (tc.r - bg.r) * t);
+                    d[i]     = Math.round(bg.r + (tc.r - bg.r) * t);
                     d[i + 1] = Math.round(bg.g + (tc.g - bg.g) * t);
                     d[i + 2] = Math.round(bg.b + (tc.b - bg.b) * t);
                 }
@@ -4959,21 +5065,19 @@
             if (docPageSlider) docPageSlider.update();
         }
 
-        // === Стрелки/свайпы: всегда показываем верх страницы при смене страницы ===
         function docNextPage() {
             if (docV2.page < docV2.total) {
                 docV2.page++;
                 renderDocPage();
-                const s = document.getElementById('docScroll');
-                if (s) s.scrollTop = 0;
+                const s = document.getElementById('docScroll'); if (s) s.scrollTop = 0;
             }
         }
-        function docPrevPage() {
+        function docPrevPage(fromBottom = false) {
             if (docV2.page > 1) {
                 docV2.page--;
                 renderDocPage();
                 const s = document.getElementById('docScroll');
-                if (s) s.scrollTop = 0;
+                if (s) s.scrollTop = (fromBottom === true) ? s.scrollHeight : 0;
             }
         }
 
@@ -5026,8 +5130,8 @@
         }
 
         document.getElementById('docClose').addEventListener('click', closeDocViewer);
-        document.getElementById('docNext').addEventListener('click', docNextPage);
-        document.getElementById('docPrev').addEventListener('click', docPrevPage);
+        document.getElementById('docNext').addEventListener('click', () => docNextPage());
+        document.getElementById('docPrev').addEventListener('click', () => docPrevPage());
         document.getElementById('docZoomIn').addEventListener('click', () => docZoom(0.2));
         document.getElementById('docZoomOut').addEventListener('click', () => docZoom(-0.2));
         document.getElementById('docZoomDisplay').addEventListener('click', docToggleZoom);
@@ -5037,12 +5141,12 @@
             if (e.ctrlKey) { e.preventDefault(); docZoom(e.deltaY < 0 ? 0.15 : -0.15); return; }
             const scroll = e.currentTarget;
             const fitsVert = scroll.scrollHeight <= scroll.clientHeight + 4;
-            if (fitsVert) { e.preventDefault(); if (e.deltaY > 0) docNextPage(); else docPrevPage(); }
+            if (fitsVert) { e.preventDefault(); if (e.deltaY > 0) docNextPage(); else docPrevPage(true); }
             else {
                 const atBottom = scroll.scrollTop + scroll.clientHeight >= scroll.scrollHeight - 2;
                 const atTop = scroll.scrollTop <= 2;
                 if (e.deltaY > 0 && atBottom) { e.preventDefault(); docNextPage(); }
-                else if (e.deltaY < 0 && atTop) { e.preventDefault(); docPrevPage(); }
+                else if (e.deltaY < 0 && atTop) { e.preventDefault(); docPrevPage(true); }
             }
         }, { passive: false });
 
@@ -5067,7 +5171,7 @@
                 e.preventDefault();
                 const fits  = scroll.scrollHeight <= scroll.clientHeight + 4;
                 const atTop = scroll.scrollTop <= 5;
-                if (fits || atTop) docPrevPage();
+                if (fits || atTop) docPrevPage(true);
                 else scroll.scrollBy({ top: -120, behavior: 'auto' });
             }
         });
@@ -5298,9 +5402,9 @@
         const fullscreenBtn = document.getElementById('fullscreenBtn');
         if (fullscreenBtn) {
             function syncFullscreenBtnLabel() {
-                fullscreenBtn.textContent = document.fullscreenElement ? '⤡' : '⛶';
-                fullscreenBtn.title = document.fullscreenElement
-                    ? 'Выйти из полного экрана' : 'На весь экран';
+                fullscreenBtn.classList.toggle('is-fs', !!document.fullscreenElement);
+                fullscreenBtn.title = document.fullscreenElement ? 'Выйти из полного экрана' : 'На весь экран';
+                fullscreenBtn.setAttribute('aria-label', document.fullscreenElement ? 'Выйти из полного экрана' : 'На весь экран');
             }
             syncFullscreenBtnLabel();
 
@@ -5323,7 +5427,6 @@
             document.addEventListener('fullscreenchange', handleFullscreenChange);
         }
 
-        // === Оптимизация на Android по умолчанию ===
         if (IS_TOUCH) {
             document.body.classList.add('low-perf');
             const _pbInit = document.getElementById('perfToggleBtn');
@@ -5427,15 +5530,11 @@
 
         let wheelAccum = 0, wheelLock = false;
         document.addEventListener('wheel', e => {
+            if (isAnyViewerOpen()) return;
             const ae = document.activeElement;
             if (ae && ae.getAttribute('contenteditable') === 'true') return;
             const panel = document.getElementById('creaturePanel');
             if (panel && panel.classList.contains('show') && panel.contains(e.target)) return;
-
-            const viewerOpen = document.getElementById('viewer').classList.contains('show');
-            const pdfOpen = document.getElementById('pdfViewer').classList.contains('show');
-            const docOpen = document.getElementById('docViewer').classList.contains('show');
-            if (viewerOpen || pdfOpen || docOpen) { if (viewerOpen) e.preventDefault(); return; }
 
             e.preventDefault();
             if (wheelLock) return;
@@ -5624,8 +5723,8 @@
         });
 
         document.getElementById('pdfClose').addEventListener('click', closePdfViewer);
-        document.getElementById('pdfNext').addEventListener('click', pdfNext);
-        document.getElementById('pdfPrev').addEventListener('click', pdfPrev);
+        document.getElementById('pdfNext').addEventListener('click', () => pdfNext());
+        document.getElementById('pdfPrev').addEventListener('click', () => pdfPrev());
         document.getElementById('pdfZoomIn').addEventListener('click', () => pdfZoom(0.2));
         document.getElementById('pdfZoomOut').addEventListener('click', () => pdfZoom(-0.2));
         document.getElementById('pdfZoomDisplay').addEventListener('click', pdfToggleZoom);
@@ -5635,12 +5734,12 @@
             if (e.ctrlKey) { e.preventDefault(); pdfZoom(e.deltaY < 0 ? 0.15 : -0.15); return; }
             const scroll = e.currentTarget;
             const fitsVert = scroll.scrollHeight <= scroll.clientHeight + 4;
-            if (fitsVert) { e.preventDefault(); if (e.deltaY > 0) pdfNext(); else pdfPrev(); }
+            if (fitsVert) { e.preventDefault(); if (e.deltaY > 0) pdfNext(); else pdfPrev(true); }
             else {
                 const atBottom = scroll.scrollTop + scroll.clientHeight >= scroll.scrollHeight - 2;
                 const atTop = scroll.scrollTop <= 2;
                 if (e.deltaY > 0 && atBottom) { e.preventDefault(); pdfNext(); }
-                else if (e.deltaY < 0 && atTop) { e.preventDefault(); pdfPrev(); }
+                else if (e.deltaY < 0 && atTop) { e.preventDefault(); pdfPrev(true); }
             }
         }, { passive: false });
 
@@ -5667,7 +5766,7 @@
                 e.preventDefault();
                 const fits  = scroll.scrollHeight <= scroll.clientHeight + 4;
                 const atTop = scroll.scrollTop <= 5;
-                if (fits || atTop) pdfPrev();
+                if (fits || atTop) pdfPrev(true);
                 else scroll.scrollBy({ top: -120, behavior: 'auto' });
             }
         });
@@ -5726,7 +5825,6 @@
             });
 
             if (IS_TOUCH) {
-                // ================== ANDROID: автономное движение + автозагрузка ==================
                 const VELOCITY_BASE = 70;
                 let velX = (Math.random() < 0.5 ? -1 : 1) * VELOCITY_BASE;
                 let velY = (Math.random() < 0.5 ? -1 : 1) * VELOCITY_BASE * 0.7;
@@ -5833,7 +5931,6 @@
                             btn.classList.remove('snapping');
                             btn.classList.add('armed');
                             btn.textContent = 'ЗАГРУЗИТЬ ▸';
-                            // Не нужно жать второй раз — просто отпустил и всё, загружается само
                             setTimeout(() => { if (!alreadyUsed) btn.click(); }, 320);
                         }, 300);
                     } else {
@@ -6433,24 +6530,42 @@
         const pdfPageSlider = setupPageSlider('pdfPageSlider', 'pdfPageSliderThumb', pdfV,   () => renderPdfPage());
 
         // ============================================================
-        // === Свайпы у границ документа на Android ===
+        // === Свайпы в документе (Android): влево/вправо — страницы ===
         // ============================================================
         function attachSwipePaging(scrollEl, nextFn, prevFn) {
             if (!scrollEl || !IS_TOUCH) return;
-            let startY = 0, startT = 0;
+            let sx = 0, sy = 0, st = 0, sLeft = 0, multi = false;
+
             scrollEl.addEventListener('touchstart', (e) => {
-                if (e.touches.length !== 1) return;
-                startY = e.touches[0].clientY;
-                startT = Date.now();
+                if (e.touches.length !== 1) { multi = true; return; }
+                multi = false;
+                sx = e.touches[0].clientX; sy = e.touches[0].clientY;
+                st = Date.now(); sLeft = scrollEl.scrollLeft;
             }, { passive: true });
+
             scrollEl.addEventListener('touchend', (e) => {
+                if (multi) { if (e.touches.length === 0) multi = false; return; }
                 if (e.changedTouches.length !== 1) return;
-                const deltaY = startY - e.changedTouches[0].clientY;
-                if (Date.now() - startT > 600 || Math.abs(deltaY) < 60) return;
+                const t = e.changedTouches[0];
+                const dx = t.clientX - sx, dy = t.clientY - sy, dt = Date.now() - st;
+                const adx = Math.abs(dx), ady = Math.abs(dy);
+
+                if (dt < 700 && adx >= 60 && adx > ady * 1.5) {
+                    const canPanX = scrollEl.scrollWidth > scrollEl.clientWidth + 4;
+                    const movedX  = Math.abs(scrollEl.scrollLeft - sLeft) > 2;
+                    const atLeft  = scrollEl.scrollLeft <= 2;
+                    const atRight = scrollEl.scrollLeft + scrollEl.clientWidth >= scrollEl.scrollWidth - 2;
+                    if (dx < 0 && (!canPanX || (atRight && !movedX))) nextFn();
+                    else if (dx > 0 && (!canPanX || (atLeft && !movedX))) prevFn();
+                    return;
+                }
+
+                const deltaY = -dy;
+                if (dt > 600 || Math.abs(deltaY) < 60 || adx > ady) return;
                 const atBottom = scrollEl.scrollTop + scrollEl.clientHeight >= scrollEl.scrollHeight - 5;
                 const atTop    = scrollEl.scrollTop <= 5;
                 if (deltaY > 0 && atBottom) nextFn();
-                else if (deltaY < 0 && atTop) prevFn();
+                else if (deltaY < 0 && atTop) prevFn(true);
             }, { passive: true });
         }
         attachSwipePaging(document.getElementById('docScroll'), docNextPage, docPrevPage);
@@ -6565,7 +6680,6 @@
             });
         })();
 
-        // === ANDROID: сброс «залипающего» фокуса после тапа ===
         if (IS_TOUCH) {
             document.addEventListener('touchend', function (e) {
                 const el = e.target;
@@ -6583,10 +6697,7 @@
         }
 
         // ============================================================
-        // === Двухпальцевые жесты на Android ========================
-        //    - два пальца влево/вправо = переключение слайда/страницы
-        //    - два пальца тап = двойной тап по элементу
-        //    - пока пальцев два, элементы не реагируют на отдельные пальцы
+        // === Двухпальцевые жесты: перелистывание и открытие =========
         // ============================================================
         (function initTwoFingerGestures() {
             if (!IS_TOUCH) return;
@@ -6605,6 +6716,7 @@
 
             document.addEventListener('touchstart', (e) => {
                 if (e.touches.length >= 2) {
+                    clearTimeout(window.__mtReset);
                     window.__multiTouchActive = true;
                     if (!cancelled) {
                         cancelled = true;
@@ -6634,15 +6746,14 @@
                 if (!twoActive || e.touches.length !== 2) return;
                 lastT1 = { x: e.touches[0].clientX, y: e.touches[0].clientY };
                 lastT2 = { x: e.touches[1].clientX, y: e.touches[1].clientY };
-                const moved = Math.max(
-                    Math.hypot(lastT1.x - startT1.x, lastT1.y - startT1.y),
-                    Math.hypot(lastT2.x - startT2.x, lastT2.y - startT2.y)
-                );
-                if (moved > 12) e.preventDefault();
+                if (e.cancelable) e.preventDefault();
             }, { capture: true, passive: false });
 
             document.addEventListener('touchend', (e) => {
-                if (e.touches.length < 2) window.__multiTouchActive = false;
+                if (e.touches.length === 0) {
+                    clearTimeout(window.__mtReset);
+                    window.__mtReset = setTimeout(() => { window.__multiTouchActive = false; }, 300);
+                }
                 if (!twoActive) return;
                 if (e.touches.length >= 2) return;
 
@@ -6669,6 +6780,7 @@
 
                 // Двухпальцевый горизонтальный свайп = переключение слайда/страницы
                 if (Math.abs(avgDx) > 60 && Math.abs(avgDx) > Math.abs(avgDy) * 1.4) {
+                    if (document.getElementById('viewer').classList.contains('show')) return;
                     const pdfOpen = document.getElementById('pdfViewer').classList.contains('show');
                     const docOpen = document.getElementById('docViewer').classList.contains('show');
                     if (pdfOpen) { avgDx < 0 ? pdfNext() : pdfPrev(); }
@@ -6678,7 +6790,10 @@
             }, { capture: true, passive: true });
 
             document.addEventListener('touchcancel', (e) => {
-                if (e.touches.length < 2) window.__multiTouchActive = false;
+                if (e.touches.length === 0) {
+                    clearTimeout(window.__mtReset);
+                    window.__mtReset = setTimeout(() => { window.__multiTouchActive = false; }, 300);
+                }
                 twoActive = false;
             }, { capture: true, passive: true });
         })();
